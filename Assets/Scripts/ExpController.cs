@@ -20,7 +20,7 @@ public class ExpController : MonoBehaviour
         EXPprocessBar.fillAmount = (CurrentEXP / TargetEXP);
         if(CurrentEXP >=TargetEXP){
             CurrentEXP = CurrentEXP - TargetEXP;
-            TargetEXP +=50;
+            TargetEXP *= 2 ;
             Level++;
         }
     }
