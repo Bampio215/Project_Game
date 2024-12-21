@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
     private int currentHealth; // Máu hiện tại
     public HealthBar healthBar; // Tham chiếu đến thanh máu
 
+    AudioManager audioManager;
     void Start()
     {
         currentHealth = maxHealth;
@@ -36,5 +37,11 @@ public class Health : MonoBehaviour
         // Khi quái vật chết, có thể thêm hiệu ứng tiêu diệt tại đây
         Destroy(gameObject); // Xóa quái vật
         Destroy(healthBar.gameObject); // Xóa thanh máu
+        audioManager.playSFX(audioManager.break_die);
+ 
+    }
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 }
