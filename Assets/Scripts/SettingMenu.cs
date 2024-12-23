@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class SettingMenu : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class SettingMenu : MonoBehaviour
         Application.Quit();
     }
 
-
+   
 
 
     // Hiển thị một Panel mới
@@ -53,6 +54,7 @@ public class SettingMenu : MonoBehaviour
     }
 
     // Quay lại Panel trước đó
+
     public void Back()
     {
         // Nếu có Panel trong lịch sử, lấy ra và hiển thị
