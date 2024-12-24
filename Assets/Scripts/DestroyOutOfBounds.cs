@@ -40,4 +40,10 @@ public class DestroyOutOfBounds : MonoBehaviour
         }
     }
 
+
+
+
+
+
+
 }
