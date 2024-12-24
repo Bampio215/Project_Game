@@ -15,13 +15,17 @@ public class CharacterUIManager : MonoBehaviour
     public TextMeshProUGUI levelText;
 
     public TMP_InputField levelTextField;
-
+    public TMP_Dropdown difficultyManager;
     void Start()
     {
         playerCharacter = new Property();
+        difficultyManager.value = 1;
         UpdateUI();
+        
     }
-
+    public void Update()
+    {
+    }
     public void OnLevelUp()
     {
         playerCharacter.LevelUp();
@@ -49,6 +53,33 @@ public class CharacterUIManager : MonoBehaviour
         cooldownText.text = $"Cooldown: {playerCharacter.Cooldown}";
         levelText.text = $"Level {playerCharacter.Level}";
         levelTextField.text = playerCharacter.Level.ToString();
+    }
+
+    public void Play(GameObject panel)
+    {
+        panel.SetActive(false);
+    }
+
+    public void PlayContinue(GameObject panel)
+    {
+        panel.SetActive(false);
+    }
+    public void SetDifficulty()
+    {
+        switch (difficultyManager.value)
+        {
+            case 0:
+                Time.timeScale = 0.8f; // Chậm hơn
+                Debug.Log("err "+0);
+                break;
+            case 1:
+
+                Time.timeScale = 1f; 
+                break;
+            case 2:
+                Time.timeScale = 1.2f; // Nhanh hơn
+                break;
+        }
     }
 }
 
