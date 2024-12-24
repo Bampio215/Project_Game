@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     {
         playerProperty = new Property();
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Reset());
 
         }
-        
+
         horizontalInput = Input.GetAxis("Horizontal");
 
         transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * playerProperty.Speed);
@@ -56,6 +56,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Awake()
     {
-            audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 }
