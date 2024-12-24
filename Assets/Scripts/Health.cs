@@ -38,7 +38,7 @@ public class Health : MonoBehaviour
         Destroy(gameObject); // Xóa quái vật
         Destroy(healthBar.gameObject); // Xóa thanh máu
         audioManager.playSFX(audioManager.break_die);
- 
+
     }
     private void Awake()
     {
