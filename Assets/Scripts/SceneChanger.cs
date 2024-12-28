@@ -20,4 +20,8 @@ public class SceneChanger : MonoBehaviour
     {
         SceneManager.LoadScene(Prototype2);
     }
+    public void LoadSceneByIndex(int scene_id)
+    {
+        SceneManager.LoadScene(scene_id);
+    }
 }

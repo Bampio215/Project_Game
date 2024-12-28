@@ -13,18 +13,18 @@ public class SpawnManager : MonoBehaviour
     private float spawnInterval = 1.5f;
 
     private MoveForward MoveBoss;
-    
+
     // Start is called before the first frame update
     void Start()
     {
         InvokeRepeating("SpawnRandomAnimal", startDelay, spawnInterval);
-        InvokeRepeating("SpawnRandomBoss",10f,100f);
-       
+        InvokeRepeating("SpawnRandomBoss", 10f, 100f);
+
     }
 
     void Update()
     {
-      
+
     }
     void SpawnRandomAnimal()
     {
@@ -50,7 +50,8 @@ public class SpawnManager : MonoBehaviour
         Instantiate(animalPrefabs[animalIndex], spawnpos, rotation);
 
     }
-    void SpawnRandomBoss(){
+    void SpawnRandomBoss()
+    {
         int animalIndex = Random.Range(0, animalPrefabs.Length);
         int index = Random.Range(1, 4);
         Vector3 spawnpos;
@@ -71,7 +72,7 @@ public class SpawnManager : MonoBehaviour
             rotation = Quaternion.Euler(0, 270, 0);
         }
         GameObject boss = Instantiate(animalPrefabs[animalIndex], spawnpos, rotation);
-    
+
         // Scale up the boss
         boss.transform.localScale *= 5;
         HealthBar bossHealthBar = boss.GetComponentInChildren<HealthBar>();
@@ -87,11 +88,11 @@ public class SpawnManager : MonoBehaviour
         Health bossHealth = boss.GetComponent<Health>();
         if (bossHealth != null)
         {
-        bossHealth.maxHealth *= 10;
+            bossHealth.maxHealth *= 10;
         }
 
-      
-         boss.tag = "Boss";
+
+        boss.tag = "Boss";
     }
 }
 
