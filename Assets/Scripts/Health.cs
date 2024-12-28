@@ -23,6 +23,7 @@ public class Health : MonoBehaviour
             Die();
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Food"))
@@ -31,14 +32,25 @@ public class Health : MonoBehaviour
         }
     }
 
-
     void Die()
     {
-        // Khi quái vật chết, có thể thêm hiệu ứng tiêu diệt tại đây
-        Destroy(gameObject); // Xóa quái vật
-        Destroy(healthBar.gameObject); // Xóa thanh máu
-        audioManager.playSFX(audioManager.break_die);
+        // Kiểm tra nếu đối tượng là Boss
+        if (CompareTag("Boss"))
+        {
+            // Đóng băng thời gian
+            Time.timeScale = 0;
 
+            // Tùy chọn: Thêm thông báo hoặc hiển thị giao diện
+            Debug.Log("Boss đã chết! Thời gian đã bị đóng băng.");
+        }
+
+        // Xóa thanh máu và đối tượng
+        if (healthBar != null)
+        {
+            Destroy(healthBar.gameObject);
+        }
+
+        Destroy(gameObject);
     }
     private void Awake()
     {
