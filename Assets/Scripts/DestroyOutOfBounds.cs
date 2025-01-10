@@ -40,6 +40,7 @@ public class DestroyOutOfBounds : MonoBehaviour
                 }
                 else
                 {
+                    health.TakeDamage(1);
                 }
 
                 Destroy(gameObject);
