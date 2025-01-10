@@ -30,7 +30,7 @@ public class DestroyOutOfBounds : MonoBehaviour
         {
             if (transform.position.z < lowBound || transform.position.x < 3 * lowBound || transform.position.x > -3 * lowBound)
             {
-                if (CompareTag("Boss")) // Kiểm tra nếu đối tượng có tag là "Boss"
+                if (health != null)
                 {
                     health.TakeDamage(200); // Gây sát thương nếu là Boss
                     //GameObject uiCanvas = GameObject.FindGameObjectWithTag("UICanvas"); // Thay "UICanvas" bằng tên GameObject của Canvas trong scene

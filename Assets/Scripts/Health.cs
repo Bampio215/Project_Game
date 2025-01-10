@@ -10,7 +10,7 @@ public class Health : MonoBehaviour
     private ExpController expController;
     public int ExpCreep;
     void Start()
-    {   
+    {
         expController = FindObjectOfType<ExpController>();
         currentHealth = maxHealth;
         healthBar.SetHealth(currentHealth, maxHealth); // Cập nhật thanh máu
@@ -34,6 +34,7 @@ public class Health : MonoBehaviour
         }
     }
 
+
     void Die()
     {
         // Kiểm tra nếu đối tượng là Boss
@@ -52,13 +53,12 @@ public class Health : MonoBehaviour
             Destroy(healthBar.gameObject);
         }
 
+        expController.CurrentEXP += ExpCreep;
         Destroy(gameObject);
     }
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
-        expController.CurrentEXP += ExpCreep; 
-        Destroy(gameObject); 
-        Destroy(healthBar.gameObject);
+
     }
 }

@@ -6688,6 +6688,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 2
-  currentHealth: 0
   healthBar: {fileID: 832551009350042115}
   ExpCreep: 5
