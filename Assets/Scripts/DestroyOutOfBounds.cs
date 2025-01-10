@@ -10,14 +10,12 @@ public class DestroyOutOfBounds : MonoBehaviour
     private float lowBound = -10;
 
     private Health health;
-
     void Start()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             health = player.GetComponent<Health>();
-
         }
     }
 
@@ -27,7 +25,6 @@ public class DestroyOutOfBounds : MonoBehaviour
         if (transform.position.z > topBound)
         {
             Destroy(gameObject);
-
         }
         else
         {
@@ -43,16 +40,12 @@ public class DestroyOutOfBounds : MonoBehaviour
                 }
                 else
                 {
-                    health.TakeDamage(1); // Gây sát thương 1 điểm máu nếu không phải Boss
+                    health.TakeDamage(1);
                 }
 
                 Destroy(gameObject);
             }
         }
-        //  if (health != null && health.currentHealth <= 0)
-        // {
-        //     Time.timeScale = 0; // Dừng thời gian
-        // }
     }
 
 }

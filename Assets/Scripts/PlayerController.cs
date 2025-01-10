@@ -15,15 +15,22 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     private bool delaySpace = false;
 
-    // Start is called before the first frame update
+    Animator animator;
+
     void Start()
     {
         playerProperty = new Property();
+        transform.rotation = Quaternion.Euler(0,0,0);
+        animator = GetComponent<Animator>();
+        animator.SetFloat("Speed_f",1);
+        animator.SetBool("Static_b",true);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+        transform.position = new Vector3(transform.position.x, 0, 0);
         if (transform.position.x < -xRange)
         {
             transform.position = new Vector3(-xRange, transform.position.y, transform.position.z);
@@ -34,14 +41,34 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
 
         }
+
+        if(Input.GetKey("a")){
+            transform.rotation = Quaternion.Euler(0,-90,0);
+            transform.Translate(Vector3.forward * Time.deltaTime * speed);
+            animator.SetFloat("Speed_f",1);
+            animator.SetBool("Static_b",false);
+        }else if(Input.GetKey("d")){
+            transform.rotation = Quaternion.Euler(0,90,0);
+            transform.Translate(Vector3.forward * Time.deltaTime * speed);
+            animator.SetFloat("Speed_f",1);
+            animator.SetBool("Static_b",false);
+        }else{
+            transform.rotation = Quaternion.Euler(0,0,0);
+            animator.SetBool("Static_b",true);
+        }
+
         if (Input.GetKeyDown(KeyCode.Space) && !delaySpace)
         {
             audioManager.playSFX(audioManager.gunshot);
 
             Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
             delaySpace = true;
+            transform.rotation = Quaternion.Euler(0,0,0);
+            animator.SetBool("IsATK",true);
             StartCoroutine(Reset());
 
+        }else{
+            animator.SetBool("IsATK",false);
         }
 
         horizontalInput = Input.GetAxis("Horizontal");
