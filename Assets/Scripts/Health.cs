@@ -5,11 +5,10 @@ public class Health : MonoBehaviour
     public int maxHealth; // Máu tối đa
     private int currentHealth; // Máu hiện tại
     public HealthBar healthBar; // Tham chiếu đến thanh máu
-    private ExpController expController;
-    public int ExpCreep;
+
+    AudioManager audioManager;
     void Start()
-    {   
-        expController = FindObjectOfType<ExpController>();
+    {
         currentHealth = maxHealth;
         healthBar.SetHealth(currentHealth, maxHealth); // Cập nhật thanh máu
     }
@@ -24,6 +23,7 @@ public class Health : MonoBehaviour
             Die();
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Food"))
@@ -32,11 +32,28 @@ public class Health : MonoBehaviour
         }
     }
 
-
     void Die()
     {
-        expController.CurrentEXP += ExpCreep; 
-        Destroy(gameObject); 
-        Destroy(healthBar.gameObject);
+        // Kiểm tra nếu đối tượng là Boss
+        if (CompareTag("Boss"))
+        {
+            // Đóng băng thời gian
+            Time.timeScale = 0;
+
+            // Tùy chọn: Thêm thông báo hoặc hiển thị giao diện
+            Debug.Log("Boss đã chết! Thời gian đã bị đóng băng.");
+        }
+
+        // Xóa thanh máu và đối tượng
+        if (healthBar != null)
+        {
+            Destroy(healthBar.gameObject);
+        }
+
+        Destroy(gameObject);
+    }
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 }
