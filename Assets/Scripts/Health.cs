@@ -7,11 +7,8 @@ public class Health : MonoBehaviour
     public HealthBar healthBar; // Tham chiếu đến thanh máu
 
     AudioManager audioManager;
-    private ExpController expController;
-    public int ExpCreep;
     void Start()
-    {   
-        expController = FindObjectOfType<ExpController>();
+    {
         currentHealth = maxHealth;
         healthBar.SetHealth(currentHealth, maxHealth); // Cập nhật thanh máu
     }
@@ -26,6 +23,7 @@ public class Health : MonoBehaviour
             Die();
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Food"))
@@ -57,8 +55,5 @@ public class Health : MonoBehaviour
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
-        expController.CurrentEXP += ExpCreep; 
-        Destroy(gameObject); 
-        Destroy(healthBar.gameObject);
     }
 }
