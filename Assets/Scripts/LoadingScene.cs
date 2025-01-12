@@ -10,11 +10,13 @@ public class LoadingScene : MonoBehaviour
 
     public Slider progressBar;
 
-    public void LoadScene(int sceneId) {
+    public void LoadScene(int sceneId)
+    {
         StartCoroutine(LoadSceneAsync(sceneId));
     }
 
-    IEnumerator LoadSceneAsync(int SenceId) { 
+    IEnumerator LoadSceneAsync(int SenceId)
+    {
         AsyncOperation operation = SceneManager.LoadSceneAsync(SenceId);
         loadingScene.SetActive(true);
 

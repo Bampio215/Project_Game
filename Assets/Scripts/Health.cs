@@ -3,23 +3,49 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public int maxHealth; // Máu tối đa
-    private int currentHealth; // Máu hiện tại
+    public int currentHealth; // Máu hiện tại
     public HealthBar healthBar; // Tham chiếu đến thanh máu
-
+    public bool isPlayer;
+    public int strength = 1;
+    public int health = 0;
+    public int hardMax = 0;
+    public int hard = 0;
+    private Property playerProperty;
     AudioManager audioManager;
     private ExpController expController;
+    public GameObject projectilePrefab;
     public int ExpCreep;
     void Start()
     {
-        expController = FindObjectOfType<ExpController>();
-        currentHealth = maxHealth;
-        healthBar.SetHealth(currentHealth, maxHealth); // Cập nhật thanh máu
+        LoadPlayerData();
+        expController = Object.FindFirstObjectByType<ExpController>();
+        if (isPlayer)
+        {
+            maxHealth = health;
+            currentHealth = maxHealth;
+        }
+        else
+        {
+            maxHealth = maxHealth * (int)Mathf.Pow(2, hard);
+
+            currentHealth = maxHealth;
+
+            ExpCreep = ExpCreep * (hard + 1);
+        }
+        if (healthBar != null)
+        {
+            healthBar.targetObject = gameObject; // Cập nhật đối tượng mục tiêu
+            healthBar.SetHealth(currentHealth, maxHealth); // Cập nhật thanh máu
+        }
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        healthBar.SetHealth(currentHealth, maxHealth); // Cập nhật thanh máu
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(currentHealth, maxHealth); // Cập nhật thanh máu
+        }
 
         if (currentHealth <= 0)
         {
@@ -30,7 +56,7 @@ public class Health : MonoBehaviour
     {
         if (other.CompareTag("Food"))
         {
-            TakeDamage(1);
+            TakeDamage(strength);
         }
     }
 
@@ -43,22 +69,62 @@ public class Health : MonoBehaviour
             // Đóng băng thời gian
             Time.timeScale = 0;
 
-            // Tùy chọn: Thêm thông báo hoặc hiển thị giao diện
-            Debug.Log("Boss đã chết! Thời gian đã bị đóng băng.");
-        }
+            if (hard == hardMax)
+            {
+                hardMax++;
+                PlayerPrefs.SetInt("HardMax", hardMax);
+            }
 
-        // Xóa thanh máu và đối tượng
-        if (healthBar != null)
+
+            PlayerPrefs.Save();
+            gameObject.SetActive(false);
+
+        }
+        else
         {
-            Destroy(healthBar.gameObject);
+            if (CompareTag("Player"))
+            {
+                Time.timeScale = 0;
+
+            }
+            else
+            {
+                expController.CurrentEXP += ExpCreep;
+                if (healthBar != null)
+                {
+
+                    Destroy(healthBar.gameObject);
+                    healthBar = null;
+                }
+                Destroy(gameObject);
+            }
         }
 
-        expController.CurrentEXP += ExpCreep;
-        Destroy(gameObject);
     }
     private void Awake()
     {
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
+    }
+    void LoadPlayerData()
+    {
+        // Kiểm tra nếu dữ liệu tồn tại trong PlayerPrefs
+        if (PlayerPrefs.HasKey("Strength"))
+        {
+            strength = PlayerPrefs.GetInt("Strength");
+        }
+        if (PlayerPrefs.HasKey("Health"))
+        {
+            health = PlayerPrefs.GetInt("Health");
+        }
+        if (PlayerPrefs.HasKey("Hard"))
+        {
+            hard = PlayerPrefs.GetInt("Hard");
+        }
+        if (PlayerPrefs.HasKey("HardMax"))
+        {
+            hardMax = PlayerPrefs.GetInt("HardMax");
+        }
 
     }
 }

@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject pausePanel;
-    
+
     public void Restart()
     {
 
@@ -24,8 +24,8 @@ public class PauseMenu : MonoBehaviour
         pausePanel.SetActive(false);
         Time.timeScale = 1;
     }
-    public void EndGame()
-    {
-        SceneManager.LoadScene("StartGame");
-    }
+    // public void EndGame()
+    // {
+    //     SceneManager.LoadScene("StartGame");
+    // }
 }

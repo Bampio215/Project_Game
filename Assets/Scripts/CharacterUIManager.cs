@@ -18,9 +18,14 @@ public class CharacterUIManager : MonoBehaviour
 
     void Start()
     {
-        playerCharacter = new Property();
+        if (playerCharacter == null)
+        {
+            playerCharacter = GetComponent<Property>();
+        }
+        playerCharacter.LoadState();
         UpdateUI();
     }
+
 
     public void OnLevelUp()
     {
@@ -42,13 +47,13 @@ public class CharacterUIManager : MonoBehaviour
     }
     private void UpdateUI()
     {
-        availablePointsText.text = $"Points: {playerCharacter.AvailablePoints}";
+        availablePointsText.text = $"Stats: {playerCharacter.AvailablePoints}";
         strengthText.text = $"Strength: {playerCharacter.Strength}";
         speedText.text = $"Speed: {playerCharacter.Speed}";
         healthText.text = $"Health: {playerCharacter.Health}";
         cooldownText.text = $"Cooldown: {playerCharacter.Cooldown}";
         levelText.text = $"Level {playerCharacter.Level}";
-        levelTextField.text = playerCharacter.Level.ToString();
+        levelTextField.text = playerCharacter.Hard.ToString();
     }
 }
 

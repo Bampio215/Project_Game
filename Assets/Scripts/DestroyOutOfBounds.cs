@@ -10,8 +10,11 @@ public class DestroyOutOfBounds : MonoBehaviour
     private float lowBound = -10;
 
     private Health health;
+    public GameObject projectilePrefab;
+    public int hard = 0;
     void Start()
     {
+        LoadPlayerData();
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
@@ -30,22 +33,32 @@ public class DestroyOutOfBounds : MonoBehaviour
         {
             if (transform.position.z < lowBound || transform.position.x < 3 * lowBound || transform.position.x > -3 * lowBound)
             {
-                if (health != null)
+                if (CompareTag("Boss")) // Kiểm tra nếu đối tượng có tag là "Boss"
                 {
-                    health.TakeDamage(200); // Gây sát thương nếu là Boss
-                    //GameObject uiCanvas = GameObject.FindGameObjectWithTag("UICanvas"); // Thay "UICanvas" bằng tên GameObject của Canvas trong scene
-
-                    //uiCanvas.SetActive(true);
+                    health.TakeDamage(health.maxHealth);
+                    gameObject.SetActive(false);
 
                 }
                 else
                 {
-                    health.TakeDamage(1);
+                    if (health != null)
+                    {
+                        health.TakeDamage((int)Mathf.Pow(2, hard));
+                        Destroy(gameObject);
+                    }
                 }
 
-                Destroy(gameObject);
             }
         }
+    }
+    void LoadPlayerData()
+    {
+        // Kiểm tra nếu dữ liệu tồn tại trong PlayerPrefs
+        if (PlayerPrefs.HasKey("Hard"))
+        {
+            hard = PlayerPrefs.GetInt("Hard");
+        }
+
     }
 
 }

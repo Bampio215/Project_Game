@@ -16,7 +16,7 @@ public class SettingMenu : MonoBehaviour
     }
     public void SetVolume(float volume)
     {
-        audioMixer.SetFloat("volume",volume);
+        audioMixer.SetFloat("volume", volume);
     }
     public void SetQuanity(int qualityIndex)
     {
@@ -32,10 +32,16 @@ public class SettingMenu : MonoBehaviour
     }
     public void Quit()
     {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
     }
 
-   
+
 
 
     // Hiển thị một Panel mới

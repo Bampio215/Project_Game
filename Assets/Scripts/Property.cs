@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
 
-public class Property
+public class Property : MonoBehaviour
 {
     public int Level { get; private set; }
     public int AvailablePoints { get; private set; }
@@ -8,57 +8,42 @@ public class Property
     public int Speed { get; private set; }
     public int Health { get; private set; }
     public int Cooldown { get; private set; }
+    public int Hard { get; private set; }
+    public int HardMax { get; private set; }
+    public int EXP { get; private set; }
 
-    // Dictionary để lưu trạng thái theo từng level
-    private Dictionary<int, CharacterState> levelStates = new Dictionary<int, CharacterState>();
-
-    public Property()
+    void Start()
     {
-        Level = 1;
-        AvailablePoints = 10;
-        Strength = 1;
-        Speed = 1;
-        Health = 1;
-        Cooldown = 1;
-
-        // Lưu trạng thái ban đầu
+        // Tải trạng thái khi bắt đầu
+        LoadState();
         SaveState();
     }
+
+    // Dữ liệu sẽ được tải trong phương thức LoadState()
 
     // Tăng level
     public void LevelUp()
     {
-        Level++;
-        AvailablePoints += 5;
-
-        // Nếu level chưa từng được lưu, lưu trạng thái mới
-        if (!levelStates.ContainsKey(Level))
+        if (Hard < HardMax && Hard < 2)
         {
+            Hard++;
             SaveState();
-        }
-        else
-        {
-            // Nếu đã tồn tại trạng thái, khôi phục trạng thái đã lưu
-            RestoreState(levelStates[Level]);
         }
     }
 
     // Giảm level
     public void LevelDown()
     {
-        if (Level > 1) // Không cho phép giảm xuống dưới Level 1
+        if (Hard > 0)
         {
-            Level--;
-            if (levelStates.ContainsKey(Level))
-            {
-                // Khôi phục trạng thái của level trước
-                RestoreState(levelStates[Level]);
-            }
+            Hard--;
+            SaveState();
         }
     }
+
+    // Cập nhật chỉ số nhân vật
     public bool UpdateStat(string statName, int value)
     {
-        // Kiểm tra nếu là tăng điểm
         if (value > 0 && AvailablePoints >= value)
         {
             switch (statName.ToLower())
@@ -78,11 +63,10 @@ public class Property
                 default:
                     return false;
             }
-            AvailablePoints -= value; // Trừ điểm khả dụng
-            SaveState(); // Lưu trạng thái mới
+            AvailablePoints -= value;
+            SaveState(); // Lưu lại trạng thái sau khi thay đổi
             return true;
         }
-        // Kiểm tra nếu là giảm điểm
         else if (value < 0)
         {
             switch (statName.ToLower())
@@ -102,46 +86,60 @@ public class Property
                 default:
                     return false;
             }
-            AvailablePoints -= value; // Hoàn lại điểm nếu giảm chỉ số
-            SaveState(); // Lưu trạng thái mới
+            AvailablePoints -= value;
+            SaveState(); // Lưu lại trạng thái sau khi thay đổi
             return true;
         }
-        return false; // Nếu không hợp lệ
+        return false; // Trả về false nếu không hợp lệ
     }
 
-    // Lưu trạng thái hiện tại vào Dictionary
-    private void SaveState()
+    // Lưu trạng thái vào PlayerPrefs
+    public void SaveState()
     {
-        levelStates[Level] = new CharacterState
+        PlayerPrefs.SetInt("Level", Level);
+        PlayerPrefs.SetInt("AvailablePoints", AvailablePoints);
+        PlayerPrefs.SetInt("Strength", Strength);
+        PlayerPrefs.SetInt("Speed", Speed);
+        PlayerPrefs.SetInt("Health", Health);
+        PlayerPrefs.SetInt("Cooldown", Cooldown);
+        PlayerPrefs.SetInt("Hard", Hard);
+        PlayerPrefs.SetInt("HardMax", HardMax);
+        PlayerPrefs.SetInt("EXP", EXP);
+
+        PlayerPrefs.Save();
+
+    }
+
+    // Tải trạng thái từ PlayerPrefs
+    public void LoadState()
+    {
+        if (PlayerPrefs.HasKey("Level"))
         {
-            Level = this.Level,
-            AvailablePoints = this.AvailablePoints,
-            Strength = this.Strength,
-            Speed = this.Speed,
-            Health = this.Health,
-            Cooldown = this.Cooldown
-        };
-    }
+            Level = PlayerPrefs.GetInt("Level");
+            AvailablePoints = PlayerPrefs.GetInt("AvailablePoints");
+            Strength = PlayerPrefs.GetInt("Strength");
+            Speed = PlayerPrefs.GetInt("Speed");
+            Health = PlayerPrefs.GetInt("Health");
+            Cooldown = PlayerPrefs.GetInt("Cooldown");
+            Hard = PlayerPrefs.GetInt("Hard");
+            HardMax = PlayerPrefs.GetInt("HardMax");
+            EXP = PlayerPrefs.GetInt("EXP");
 
-    // Khôi phục trạng thái từ Dictionary
-    private void RestoreState(CharacterState state)
-    {
-        Level = state.Level;
-        AvailablePoints = state.AvailablePoints;
-        Strength = state.Strength;
-        Speed = state.Speed;
-        Health = state.Health;
-        Cooldown = state.Cooldown;
-    }
-}
+            Debug.Log("Trạng thái nhân vật đã được tải từ PlayerPrefs.");
+        }
+        else
+        {
+            Level = 1;
+            AvailablePoints = 0;
+            Strength = 1;
+            Speed = 20;
+            Health = 10;
+            Cooldown = 0;
+            Hard = 0;
+            HardMax = 0;
+            EXP = 0;
 
-// Lớp để lưu trạng thái nhân vật
-public class CharacterState
-{
-    public int Level;
-    public int AvailablePoints;
-    public int Strength;
-    public int Speed;
-    public int Health;
-    public int Cooldown;
+            Debug.Log("Không tìm thấy dữ liệu trạng thái, sử dụng trạng thái mặc định.");
+        }
+    }
 }

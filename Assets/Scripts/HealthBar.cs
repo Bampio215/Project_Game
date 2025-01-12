@@ -7,7 +7,7 @@ public class HealthBar : MonoBehaviour
 {
     // Start is called before the first frame update
     public Image fillbar;
-    public new GameObject gameObject;
+    public GameObject targetObject;
     private Vector3 offset = new Vector3(0, 0, 1.5f);
     // Điều chỉnh vị trí thanh máu
 
@@ -18,9 +18,9 @@ public class HealthBar : MonoBehaviour
 
     void Update()
     {
-        if (!gameObject.CompareTag("Player"))
+        if (targetObject != null && !targetObject.CompareTag("Player"))
         {
-            Vector3 screenPosition = Camera.main.WorldToScreenPoint(gameObject.transform.position + offset);
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(targetObject.transform.position + offset);
             fillbar.transform.position = screenPosition;
         }
 
